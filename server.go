@@ -114,6 +114,26 @@ func handleGroupPut(w http.ResponseWriter, r *http.Request, group Text) (err err
 	return
 }
 
+func handleGroupDelete(w http.ResponseWriter, r *http.Request, group Text) (err error) {
+	id, err := strconv.Atoi(path.Base(r.URL.Path))
+	if err != nil {
+		return
+	}
+
+	err = group.fetch(id)
+	if err != nil {
+		return
+	}
+
+	err = group.delete()
+	if err != nil {
+		return
+	}
+
+	w.WriteHeader(200)
+	return
+}
+
 // USER HANDLER FUNCTIONS
 
 func handleUserRequest(t Text) http.HandlerFunc {
