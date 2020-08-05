@@ -61,6 +61,16 @@ func (group *Group) create() (err error) {
 	return
 }
 
+func (group *Group) update() (err error) {
+	_, err = group.Db.Exec("update groups set name = $2 where id = $1", group.Id, group.Name)
+	return
+}
+
+func (group *Group) delete() (err error) {
+	_, err = group.Db.Exec("delete from groups where id = $1", group.Id)
+	return
+}
+
 // USER FUNCTIONS
 
 func (user *User) create() (err error) {
