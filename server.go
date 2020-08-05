@@ -48,14 +48,13 @@ func handleGroupRequest(t Text) http.HandlerFunc {
   }
 }
 
-func handleGroupGet(w http.ResponseWriter, r *http.Request) (err error) {
-	group := Group{}
+func handleGroupGet(w http.ResponseWriter, r *http.Request, group Text) (err error) {
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
 		return
 	}
 
-	_, err = group.fetch(id)
+	err = group.fetch(id)
 	if err != nil {
 		return
 	}
@@ -97,6 +96,22 @@ func handleGroupPut(w http.ResponseWriter, r *http.Request) (err error) {
 
 // USER HANDLER FUNCTIONS
 
-func handleUserRequest(w http.ResponseWriter, r *http.Request) {
-
+func handleUserRequest(t Text) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+    var err error
+    switch r.Method {
+    case "GET":
+      err = handleUserGet(w, r, t)
+    case "POST":
+      err = handleUserPost(w, r, t)
+    case "PUT":
+      err = handleUserPut(w, r, t)
+    case "DELETE":
+      err = handleUserDelete(w, r, t)
+    }
+    if err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
+  }
 }
