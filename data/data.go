@@ -30,7 +30,7 @@ type Group struct {
 
 // GROUP METHODS
 
-func (group *Group) Fetch(id int) (err error) {
+func (group *Group) fetch(id int) (err error) {
 	group.Users = []User{}
 
 	err = group.Db.QueryRow("select id, name from groups where id = $1", id).Scan(&group.Id, &group.Name)
@@ -55,25 +55,25 @@ func (group *Group) Fetch(id int) (err error) {
 	return
 }
 
-func (group *Group) Create() (err error) {
+func (group *Group) create() (err error) {
 	err = group.Db.QueryRow("insert into groups (name) values ($1) returning id", group.Name).Scan(&group.Id)
 
 	return
 }
 
-func (group *Group) Update() (err error) {
+func (group *Group) update() (err error) {
 	_, err = group.Db.Exec("update groups set name = $2 where id = $1", group.Id, group.Name)
 	return
 }
 
-func (group *Group) Delete() (err error) {
+func (group *Group) delete() (err error) {
 	_, err = group.Db.Exec("delete from groups where id = $1", group.Id)
 	return
 }
 
 // USER METHODS
 
-func (user *User) Create() (err error) {
+func (user *User) create() (err error) {
 	if user.Group == nil {
 		err = errors.New("Group not found!")
 		return
@@ -82,17 +82,17 @@ func (user *User) Create() (err error) {
 	return
 }
 
-func (user *User) Fetch(id int) (err error) {
+func (user *User) fetch(id int) (err error) {
 	err = user.Db.QueryRow("select id, name, password, email, group_id from users where id = $1", id).Scan(&user.Id, &user.Name, &user.Password, &user.Email, &user.Group)
 	return
 }
 
-func (user *User) Update() (err error) {
+func (user *User) update() (err error) {
 	_, err = user.Db.Exec("update users set name = $2, password = $3, email = $4, group_id = $5 where id = $1", user.Id, user.Name, user.Password, user.Email, user.Group.Id)
 	return
 }
 
-func (user *User) Delete() (err error) {
+func (user *User) delete() (err error) {
 	_, err = user.Db.Exec("delete from users where id = $1", user.Id)
 	return
 }

@@ -29,22 +29,24 @@ func main() {
 
 // GROUP HANDLER FUNCTIONS
 
-func handleGroupRequest(w http.ResponseWriter, r *http.Request) {
-	var err error
-	switch r.Method {
-	case "GET":
-		err = handleGroupGet(w, r)
-	case "POST":
-		err = handleGroupPost(w, r)
-	case "PUT":
-		err = handleGroupPut(w, r)
-	case "DELETE":
-		err = handleGroupDelete(w, r)
-	}
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+func handleGroupRequest(t Text) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+    var err error
+    switch r.Method {
+    case "GET":
+      err = handleGroupGet(w, r, t)
+    case "POST":
+      err = handleGroupPost(w, r, t)
+    case "PUT":
+      err = handleGroupPut(w, r, t)
+    case "DELETE":
+      err = handleGroupDelete(w, r, t)
+    }
+    if err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
+  }
 }
 
 func handleGroupGet(w http.ResponseWriter, r *http.Request) (err error) {
@@ -67,6 +69,31 @@ func handleGroupGet(w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(output)
 	return
+}
+
+func handleGroupPost(w http.ResponseWriter, r *http.Request) (err error) {
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+
+	var group Group
+
+	json.Unmarshal(body, &group)
+	err = group.create()
+	if err != nil {
+		return
+	}
+	w.WriteHeader(200)
+	return
+}
+
+func handleGroupPut(w http.ResponseWriter, r *http.Request) (err error) {
+  id, err := strconv.Atoi(path.Base(r.URL.Path))
+  if err != nil {
+    return
+  }
+
+  group, err
 }
 
 // USER HANDLER FUNCTIONS
