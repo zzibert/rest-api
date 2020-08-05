@@ -55,6 +55,12 @@ func (group *Group) fetch(id int) (err error) {
 	return
 }
 
+func (group *Group) create() (err error) {
+	err = group.Db.QueryRow("insert into groups (name) values ($1) returning id", group.Name).Scan(&group.Id)
+
+	return
+}
+
 // USER FUNCTIONS
 
 func (user *User) create() (err error) {
