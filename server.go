@@ -10,6 +10,13 @@ import (
 	. "github.com/zzibert/rest-api/data"
 )
 
+type Text interface {
+	fetch(id int) (err error)
+	create() (err error)
+	update() (err error)
+	delete() (err error)
+}
+
 func main() {
 
 	var err error
@@ -30,22 +37,22 @@ func main() {
 
 func handleGroupRequest(t Text) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-    var err error
-    switch r.Method {
-    case "GET":
-      err = handleGroupGet(w, r, t)
-    case "POST":
-      err = handleGroupPost(w, r, t)
-    case "PUT":
-      err = handleGroupPut(w, r, t)
-    case "DELETE":
-      err = handleGroupDelete(w, r, t)
-    }
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
-  }
+		var err error
+		switch r.Method {
+		case "GET":
+			err = handleGroupGet(w, r, t)
+		case "POST":
+			err = handleGroupPost(w, r, t)
+		case "PUT":
+			err = handleGroupPut(w, r, t)
+		case "DELETE":
+			err = handleGroupDelete(w, r, t)
+		}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 }
 
 func handleGroupGet(w http.ResponseWriter, r *http.Request, group Text) (err error) {
@@ -69,12 +76,10 @@ func handleGroupGet(w http.ResponseWriter, r *http.Request, group Text) (err err
 	return
 }
 
-func handleGroupPost(w http.ResponseWriter, r *http.Request) (err error) {
+func handleGroupPost(w http.ResponseWriter, r *http.Request, group Text) (err error) {
 	len := r.ContentLength
 	body := make([]byte, len)
 	r.Body.Read(body)
-
-	var group Group
 
 	json.Unmarshal(body, &group)
 	err = group.create()
@@ -85,33 +90,48 @@ func handleGroupPost(w http.ResponseWriter, r *http.Request) (err error) {
 	return
 }
 
-func handleGroupPut(w http.ResponseWriter, r *http.Request) (err error) {
-  id, err := strconv.Atoi(path.Base(r.URL.Path))
-  if err != nil {
-    return
-  }
+func handleGroupPut(w http.ResponseWriter, r *http.Request, group Text) (err error) {
+	id, err := strconv.Atoi(path.Base(r.URL.Path))
+	if err != nil {
+		return
+	}
 
-  group, err
+	err = group.fetch()
+	if err != nil {
+		return
+	}
+
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+	json.Unmarshal(body, &group)
+	err = group.update()
+	if err != nil {
+		return
+	}
+
+	w.WriteHeader(200)
+	return
 }
 
 // USER HANDLER FUNCTIONS
 
 func handleUserRequest(t Text) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-    var err error
-    switch r.Method {
-    case "GET":
-      err = handleUserGet(w, r, t)
-    case "POST":
-      err = handleUserPost(w, r, t)
-    case "PUT":
-      err = handleUserPut(w, r, t)
-    case "DELETE":
-      err = handleUserDelete(w, r, t)
-    }
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
-  }
+		var err error
+		switch r.Method {
+		case "GET":
+			err = handleUserGet(w, r, t)
+		case "POST":
+			err = handleUserPost(w, r, t)
+		case "PUT":
+			err = handleUserPut(w, r, t)
+		case "DELETE":
+			err = handleUserDelete(w, r, t)
+		}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 }
