@@ -30,9 +30,30 @@ type Group struct {
 
 // GROUP FUNCTIONS
 
-// func (group *Group) fetch(id int) (err error) {
-// 	err = group.Db.QueryRow("select ")
-// }
+func (group *Group) fetch(id int) (err error) {
+	group.Users = []User{}
+
+	err = group.Db.QueryRow("select id, name from groups where id = $1", id).Scan(&group.Id, &group.Name)
+	if err != nil {
+		return
+	}
+
+	rows, err := group.Db.Query("select id, name, password, email from users where group_id = $1", group.Id)
+	if err != nil {
+		return
+	}
+
+	for rows.Next() {
+		user := User{Db: group.Db, Group: group}
+		err = rows.Scan(&user.Id, &user.Name, &user.Password, &user.Email)
+		if err != nil {
+			return
+		}
+		group.Users = append(group.Users, user)
+	}
+	rows.Close()
+	return
+}
 
 // USER FUNCTIONS
 
@@ -43,4 +64,8 @@ func (user *User) create() (err error) {
 	}
 	err = user.Db.QueryRow("insert into users (name, password, email, group_id) values ($1, $2, $3, $4) returning id", user.Name, user.Password, user.Email, user.Group.Id).Scan(&user.Id)
 	return
+}
+
+func (user *user) fetch(id int) (err error) {
+
 }
