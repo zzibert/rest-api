@@ -82,6 +82,17 @@ func (user *User) create() (err error) {
 	return
 }
 
-func (user *user) fetch(id int) (err error) {
+func (user *User) fetch(id int) (err error) {
+	err = user.Db.QueryRow("select id, name, password, email, group_id from users where id = $1", id).Scan(&user.Id, &user.Name, &user.Password, &user.Email, &user.Group)
+	return
+}
 
+func (user *User) update() (err error) {
+	_, err = user.Db.Exec("update users set name = $2, password = $3, email = $4, group_id = $5 where id = $1", user.Id, user.Name, user.Password, user.Email, user.Group.Id)
+	return
+}
+
+func (user *User) delete() (err error) {
+	_, err = user.Db.Exec("delete from users where id = $1", user.Id)
+	return
 }
