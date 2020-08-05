@@ -28,7 +28,7 @@ type Group struct {
 	Users []User `json:"users"`
 }
 
-// GROUP FUNCTIONS
+// GROUP METHODS
 
 func (group *Group) fetch(id int) (err error) {
 	group.Users = []User{}
@@ -71,7 +71,7 @@ func (group *Group) delete() (err error) {
 	return
 }
 
-// USER FUNCTIONS
+// USER METHODS
 
 func (user *User) create() (err error) {
 	if user.Group == nil {
