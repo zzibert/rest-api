@@ -1,6 +1,9 @@
 package data
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+)
 
 type Text interface {
 	fetch(id int) (err error)
@@ -27,4 +30,17 @@ type Group struct {
 
 // GROUP FUNCTIONS
 
+// func (group *Group) fetch(id int) (err error) {
+// 	err = group.Db.QueryRow("select ")
+// }
+
 // USER FUNCTIONS
+
+func (user *User) create() (err error) {
+	if user.Group == nil {
+		err = errors.New("Group not found!")
+		return
+	}
+	err = user.Db.QueryRow("insert into users (name, password, email, group_id) values ($1, $2, $3, $4) returning id", user.Name, user.Password, user.Email, user.Group.Id).Scan(&user.Id)
+	return
+}

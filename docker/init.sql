@@ -8,5 +8,5 @@ CREATE TABLE [IF NOT EXISTS] users (
   name varchar(50) UNIQUE NOT NULL,
   password varchar(50) NOT NULL,
   email varchar(255) UNIQUE NOT NULL,
-  group_id integer references groups(group_id)
+  group_id integer references groups(id)
 );
