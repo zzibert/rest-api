@@ -2,7 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
+	"path"
+	"strconv"
 )
 
 func main() {
@@ -40,6 +43,28 @@ func handleGroupRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func handleGroupGet(w http.ResponseWriter, r *http.Request) (err error) {
+	group := Group{}
+	id, err := strconv.Atoi(path.Base(r.URL.Path))
+	if err != nil {
+		return
+	}
+
+	_, err = group.fetch(id)
+	if err != nil {
+		return
+	}
+
+	output, err := json.MarshalIndent(&group, "", "\t\t")
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(output)
+	return
 }
 
 // USER HANDLER FUNCTIONS
