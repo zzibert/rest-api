@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"path"
 	"strconv"
+
+	. "github.com/zzibert/rest-api/data"
 )
 
 func main() {
