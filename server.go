@@ -10,13 +10,6 @@ import (
 	. "github.com/zzibert/rest-api/data"
 )
 
-type Text interface {
-	fetch(id int) (err error)
-	create() (err error)
-	update() (err error)
-	delete() (err error)
-}
-
 func main() {
 
 	var err error
@@ -28,8 +21,8 @@ func main() {
 	server := http.Server{
 		Addr: "127.0.0.1:8080",
 	}
-	http.HandleFunc("/group/", handleGroupRequest(&Group{Db: db}))
-	http.HandleFunc("/user/", handleUserRequest(&User{Db: db}))
+	http.HandleFunc("/group/", handleGroupRequest(Group{Db: db}))
+	http.HandleFunc("/user/", handleUserRequest(User{Db: db}))
 	server.ListenAndServe()
 }
 

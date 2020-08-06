@@ -5,6 +5,13 @@ import (
 	"errors"
 )
 
+type Text interface {
+	fetch(id int) (err error)
+	create() (err error)
+	update() (err error)
+	delete() (err error)
+}
+
 type User struct {
 	Db       *sql.DB
 	Id       int    `json:"id"`
