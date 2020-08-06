@@ -10,13 +10,6 @@ import (
 	. "github.com/zzibert/rest-api/data"
 )
 
-type Text interface {
-	fetch(id int) (err error)
-	create() (err error)
-	update() (err error)
-	delete() (err error)
-}
-
 func main() {
 
 	var err error
