@@ -78,7 +78,7 @@ func handleGet(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 		return
 	}
 
-	err = text.fetch(id)
+	err = text.Fetch(id)
 	if err != nil {
 		return
 	}
@@ -99,7 +99,7 @@ func handlePost(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 	r.Body.Read(body)
 
 	json.Unmarshal(body, &text)
-	err = text.create()
+	err = text.Create()
 	if err != nil {
 		return
 	}
@@ -122,7 +122,7 @@ func handlePut(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 	body := make([]byte, len)
 	r.Body.Read(body)
 	json.Unmarshal(body, &text)
-	err = text.update()
+	err = text.Update()
 	if err != nil {
 		return
 	}
@@ -137,12 +137,12 @@ func handleDelete(w http.ResponseWriter, r *http.Request, text Text) (err error)
 		return
 	}
 
-	err = text.fetch(id)
+	err = text.Fetch(id)
 	if err != nil {
 		return
 	}
 
-	err = text.delete()
+	err = text.Delete()
 	if err != nil {
 		return
 	}

@@ -6,10 +6,10 @@ import (
 )
 
 type Text interface {
-	fetch(id int) (err error)
-	create() (err error)
-	update() (err error)
-	delete() (err error)
+	Fetch(id int) (err error)
+	Create() (err error)
+	Update() (err error)
+	Delete() (err error)
 }
 
 type User struct {
