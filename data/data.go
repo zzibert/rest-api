@@ -18,7 +18,7 @@ type User struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
 	Email    string `json:"email"`
-	Group    *Group `json:"group"`
+	Group_id int    `json:"group"`
 }
 
 type Group struct {
@@ -38,13 +38,13 @@ func (group *Group) Fetch(id int) (err error) {
 		return
 	}
 
-	rows, err := group.Db.Query("select id, name, password, email from users where group_id = $1", group.Id)
+	rows, err := group.Db.Query("select id, name, password, email from users where group_id = $1", id)
 	if err != nil {
 		return
 	}
 
 	for rows.Next() {
-		user := User{Db: group.Db, Group: group}
+		user := User{Db: group.Db, Group_id: id}
 		err = rows.Scan(&user.Id, &user.Name, &user.Password, &user.Email)
 		if err != nil {
 			return
@@ -74,16 +74,19 @@ func (group *Group) Delete() (err error) {
 // USER METHODS
 
 func (user *User) Create() (err error) {
-	if user.Group == nil {
+
+	_, err = user.Db.Exec("select * from groups where id = $1", user.Group_id)
+	if err != nil {
 		err = errors.New("Group not found!")
 		return
 	}
-	err = user.Db.QueryRow("insert into users (name, password, email, group_id) values ($1, $2, $3, $4) returning id", user.Name, user.Password, user.Email, user.Group.Id).Scan(&user.Id)
+
+	err = user.Db.QueryRow("insert into users (name, password, email, group_id) values ($1, $2, $3, $4) returning id", user.Name, user.Password, user.Email, user.Group_id).Scan(&user.Id)
 	return
 }
 
 func (user *User) Fetch(id int) (err error) {
-	err = user.Db.QueryRow("select id, name, password, email, group_id from users where id = $1", id).Scan(&user.Id, &user.Name, &user.Password, &user.Email, &user.Group)
+	err = user.Db.QueryRow("select id, name, password, email, group_id from users where id = $1", id).Scan(&user.Id, &user.Name, &user.Password, &user.Email, &user.Group_id)
 	return
 }
 
