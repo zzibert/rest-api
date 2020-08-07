@@ -56,7 +56,12 @@ func handleUserRequest(t Text) http.HandlerFunc {
 		var err error
 		switch r.Method {
 		case "GET":
-			err = handleGet(w, r, t)
+			switch path.Base(r.URL.Path) {
+			case ".":
+				err = handleGetAll(w, r, t)
+			default:
+				err = handleGet(w, r, t)
+			}
 		case "POST":
 			err = handlePost(w, r, t)
 		case "PUT":
