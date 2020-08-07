@@ -30,6 +30,27 @@ type Group struct {
 
 // GROUP METHODS
 
+func ListGroups(group *Group) (groups []Group, err error) {
+
+	rows, err := group.Db.Query("select id, name from groups")
+	if err != nil {
+		return
+	}
+
+	groups = make([]Group, 0)
+
+	for rows.Next() {
+		group := Group{}
+		err = rows.Scan(&group.Id, &group.Name)
+		if err != nil {
+			return
+		}
+		groups = append(groups, group)
+	}
+	rows.Close()
+	return
+}
+
 func (group *Group) Fetch(id int) (err error) {
 	group.Users = []User{}
 
@@ -72,6 +93,26 @@ func (group *Group) Delete() (err error) {
 }
 
 // USER METHODS
+
+func ListUsers(user *User) (users []User, err error) {
+	rows, err := user.Db.Query("select id, name, password, email, group_id from users")
+	if err != nil {
+		return
+	}
+
+	users = make([]User, 0)
+
+	for rows.Next() {
+		user := User{}
+		err = rows.Scan(&user.Id, &user.Name, &user.Password, &user.Email, &user.Group_id)
+		if err != nil {
+			return
+		}
+		users = append(users, user)
+	}
+	rows.Close()
+	return
+}
 
 func (user *User) Create() (err error) {
 
