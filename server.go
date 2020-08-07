@@ -94,6 +94,23 @@ func handleGet(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 	return
 }
 
+func handleGetAll(w http.ResponseWriter, r *http.Request, text Text) (err error) {
+
+	texts, err := text.List()
+	if err != nil {
+		return
+	}
+
+	output, err := json.MarshalIndent(&texts, "", "\t\t")
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(output)
+	return
+}
+
 func handlePost(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 	len := r.ContentLength
 	body := make([]byte, len)
