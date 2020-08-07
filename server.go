@@ -7,6 +7,7 @@ import (
 	"path"
 	"strconv"
 
+	_ "github.com/lib/pq"
 	. "github.com/zzibert/rest-api/data"
 )
 
@@ -113,7 +114,7 @@ func handlePut(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 		return
 	}
 
-	err = text.fetch(id)
+	err = text.Fetch(id)
 	if err != nil {
 		return
 	}
