@@ -34,31 +34,9 @@ func handleGroupRequest(t Text) http.HandlerFunc {
 		var err error
 		switch r.Method {
 		case "GET":
-			err = handleGet(w, r, t)
-		case "POST":
-			err = handlePost(w, r, t)
-		case "PUT":
-			err = handlePut(w, r, t)
-		case "DELETE":
-			err = handleDelete(w, r, t)
-		}
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	}
-}
-
-// USER HANDLER FUNCTIONS
-
-func handleUserRequest(t Text) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var err error
-		switch r.Method {
-		case "GET":
 			switch path.Base(r.URL.Path) {
 			case ".":
-				err = handleGetAll(w, r, t)
+				err = handleGetAllGroups(w, r, t)
 			default:
 				err = handleGet(w, r, t)
 			}
@@ -76,6 +54,67 @@ func handleUserRequest(t Text) http.HandlerFunc {
 	}
 }
 
+func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group Text) (err error) {
+
+	groups, err := group.List()
+	if err != nil {
+		return
+	}
+
+	output, err := json.MarshalIndent(&groups, "", "\t\t")
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(output)
+	return
+}
+
+// USER HANDLER FUNCTIONS
+
+func handleUserRequest(t Text) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var err error
+		switch r.Method {
+		case "GET":
+			switch path.Base(r.URL.Path) {
+			case ".":
+				err = handleGetAllUsers(w, r, t)
+			default:
+				err = handleGet(w, r, t)
+			}
+		case "POST":
+			err = handlePost(w, r, t)
+		case "PUT":
+			err = handlePut(w, r, t)
+		case "DELETE":
+			err = handleDelete(w, r, t)
+		}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func handleGetAllUsers(w http.ResponseWriter, r *http.Request, text Text) (err error) {
+
+	users, err := text.List()
+	if err != nil {
+		return
+	}
+
+	output, err := json.MarshalIndent(&users, "", "\t\t")
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(output)
+	return
+}
+
 //GENERIC HANDLER FUNCTIONS
 
 func handleGet(w http.ResponseWriter, r *http.Request, text Text) (err error) {
@@ -90,23 +129,6 @@ func handleGet(w http.ResponseWriter, r *http.Request, text Text) (err error) {
 	}
 
 	output, err := json.MarshalIndent(&text, "", "\t\t")
-	if err != nil {
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(output)
-	return
-}
-
-func handleGetAll(w http.ResponseWriter, r *http.Request, text Text) (err error) {
-
-	texts, err := text.List()
-	if err != nil {
-		return
-	}
-
-	output, err := json.MarshalIndent(&texts, "", "\t\t")
 	if err != nil {
 		return
 	}

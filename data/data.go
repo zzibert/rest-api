@@ -10,7 +10,6 @@ type Text interface {
 	Create() (err error)
 	Update() (err error)
 	Delete() (err error)
-	List() (texts []Text, err error)
 }
 
 type User struct {
@@ -31,18 +30,18 @@ type Group struct {
 
 // GROUP METHODS
 
-func (group *Group) List() (groups []Text, err error) {
+func (group *Group) List() (groups []Group, err error) {
 	return ListGroups(group)
 }
 
-func ListGroups(group *Group) (groups []Text, err error) {
+func ListGroups(group *Group) (groups []Group, err error) {
 
 	rows, err := group.Db.Query("select id, name from groups")
 	if err != nil {
 		return
 	}
 
-	groups = make([]Text, 0)
+	groups = make([]Group, 0)
 
 	for rows.Next() {
 		group := Group{}
