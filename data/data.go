@@ -141,7 +141,7 @@ func (user *User) Fetch(id int) (err error) {
 }
 
 func (user *User) Update() (err error) {
-	_, err = user.Db.Exec("update users set name = $2, password = $3, email = $4, group_id = $5 where id = $1", user.Id, user.Name, user.Password, user.Email, user.Group.Id)
+	_, err = user.Db.Exec("update users set name = $2, password = $3, email = $4, group_id = $5 where id = $1", user.Id, user.Name, user.Password, user.Email, user.Group_d)
 	return
 }
 
