@@ -10,6 +10,7 @@ type Text interface {
 	Create() (err error)
 	Update() (err error)
 	Delete() (err error)
+	List() (texts []Text, err error)
 }
 
 type User struct {
@@ -29,6 +30,10 @@ type Group struct {
 }
 
 // GROUP METHODS
+
+func (group *Group) List() (groups []Group, err error) {
+	return ListGroups(group)
+}
 
 func ListGroups(group *Group) (groups []Group, err error) {
 
@@ -93,6 +98,10 @@ func (group *Group) Delete() (err error) {
 }
 
 // USER METHODS
+
+func (user *User) List() (users []User, err error) {
+	return ListUsers(user)
+}
 
 func ListUsers(user *User) (users []User, err error) {
 	rows, err := user.Db.Query("select id, name, password, email, group_id from users")
