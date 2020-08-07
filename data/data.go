@@ -31,18 +31,18 @@ type Group struct {
 
 // GROUP METHODS
 
-func (group *Group) List() (groups []Group, err error) {
+func (group *Group) List() (groups []Text, err error) {
 	return ListGroups(group)
 }
 
-func ListGroups(group *Group) (groups []Group, err error) {
+func ListGroups(group *Group) (groups []Text, err error) {
 
 	rows, err := group.Db.Query("select id, name from groups")
 	if err != nil {
 		return
 	}
 
-	groups = make([]Group, 0)
+	groups = make([]Text, 0)
 
 	for rows.Next() {
 		group := Group{}
