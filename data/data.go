@@ -10,6 +10,7 @@ type Text interface {
 	Create() (err error)
 	Update() (err error)
 	Delete() (err error)
+	List() (texts []Text, err error)
 }
 
 type User struct {
