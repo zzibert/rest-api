@@ -52,7 +52,7 @@ func (group *Group) List() (groups []Group, err error) {
 
 func ListGroups(group *Group) (groups []Group, err error) {
 
-	rows, err := group.Db.Query("select id, name from groups")
+	rows, err := group.Db.Query("select id from groups")
 	if err != nil {
 		return
 	}
@@ -61,7 +61,11 @@ func ListGroups(group *Group) (groups []Group, err error) {
 
 	for rows.Next() {
 		group := Group{}
-		err = rows.Scan(&group.Id, &group.Name)
+		err = rows.Scan(group.Id)
+		if err != nil {
+			return
+		}
+		err = group.Fetch(group.Id)
 		if err != nil {
 			return
 		}
@@ -72,7 +76,7 @@ func ListGroups(group *Group) (groups []Group, err error) {
 }
 
 func (group *Group) Fetch(id int) (err error) {
-	group.Users = []User{}
+	group.Users = make([]User, 0)
 
 	err = group.Db.QueryRow("select id, name from groups where id = $1", id).Scan(&group.Id, &group.Name)
 	if err != nil {
