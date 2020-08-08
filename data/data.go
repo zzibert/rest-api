@@ -12,6 +12,22 @@ type Text interface {
 	Delete() (err error)
 }
 
+type GroupType interface {
+	Fetch(id int) (err error)
+	Create() (err error)
+	Update() (err error)
+	Delete() (err error)
+	List() (groups []Group, err error)
+}
+
+type UserType interface {
+	Fetch(id int) (err error)
+	Create() (err error)
+	Update() (err error)
+	Delete() (err error)
+	List() (users []User, err error)
+}
+
 type User struct {
 	Db       *sql.DB
 	Id       int    `json:"id"`

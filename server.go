@@ -54,7 +54,7 @@ func handleGroupRequest(t Text) http.HandlerFunc {
 	}
 }
 
-func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group Text) (err error) {
+func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group Group) (err error) {
 
 	groups, err := group.List()
 	if err != nil {
@@ -98,9 +98,9 @@ func handleUserRequest(t Text) http.HandlerFunc {
 	}
 }
 
-func handleGetAllUsers(w http.ResponseWriter, r *http.Request, text Text) (err error) {
+func handleGetAllUsers(w http.ResponseWriter, r *http.Request, user User) (err error) {
 
-	users, err := text.List()
+	users, err := user.List()
 	if err != nil {
 		return
 	}
