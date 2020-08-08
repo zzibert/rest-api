@@ -29,23 +29,23 @@ func main() {
 
 // GROUP HANDLER FUNCTIONS
 
-func handleGroupRequest(t Text) http.HandlerFunc {
+func handleGroupRequest(g GroupType) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
 		switch r.Method {
 		case "GET":
 			switch path.Base(r.URL.Path) {
-			case ".":
-				err = handleGetAllGroups(w, r, t)
+			case "group":
+				err = handleGetAllGroups(w, r, g)
 			default:
-				err = handleGet(w, r, t)
+				err = handleGet(w, r, g)
 			}
 		case "POST":
-			err = handlePost(w, r, t)
+			err = handlePost(w, r, g)
 		case "PUT":
-			err = handlePut(w, r, t)
+			err = handlePut(w, r, g)
 		case "DELETE":
-			err = handleDelete(w, r, t)
+			err = handleDelete(w, r, g)
 		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -54,7 +54,7 @@ func handleGroupRequest(t Text) http.HandlerFunc {
 	}
 }
 
-func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group Group) (err error) {
+func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group GroupType) (err error) {
 
 	groups, err := group.List()
 	if err != nil {
@@ -73,23 +73,23 @@ func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group Group) (er
 
 // USER HANDLER FUNCTIONS
 
-func handleUserRequest(t Text) http.HandlerFunc {
+func handleUserRequest(u UserType) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
 		switch r.Method {
 		case "GET":
 			switch path.Base(r.URL.Path) {
-			case ".":
-				err = handleGetAllUsers(w, r, t)
+			case "user":
+				err = handleGetAllUsers(w, r, u)
 			default:
-				err = handleGet(w, r, t)
+				err = handleGet(w, r, u)
 			}
 		case "POST":
-			err = handlePost(w, r, t)
+			err = handlePost(w, r, u)
 		case "PUT":
-			err = handlePut(w, r, t)
+			err = handlePut(w, r, u)
 		case "DELETE":
-			err = handleDelete(w, r, t)
+			err = handleDelete(w, r, u)
 		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -98,7 +98,7 @@ func handleUserRequest(t Text) http.HandlerFunc {
 	}
 }
 
-func handleGetAllUsers(w http.ResponseWriter, r *http.Request, user User) (err error) {
+func handleGetAllUsers(w http.ResponseWriter, r *http.Request, user UserType) (err error) {
 
 	users, err := user.List()
 	if err != nil {
