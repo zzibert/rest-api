@@ -10,7 +10,6 @@ type Text interface {
 	Create() (err error)
 	Update() (err error)
 	Delete() (err error)
-	List() (texts []Text, err error)
 }
 
 type User struct {
@@ -41,8 +40,6 @@ func ListGroups(group *Group) (groups []Group, err error) {
 	if err != nil {
 		return
 	}
-
-	groups = make([]Group, 0)
 
 	for rows.Next() {
 		group := Group{}
