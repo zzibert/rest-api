@@ -57,6 +57,8 @@ func ListGroups(group *Group) (groups []Group, err error) {
 		return
 	}
 
+	groups = make([]Group, 0)
+
 	for rows.Next() {
 		group := Group{}
 		err = rows.Scan(&group.Id, &group.Name)
@@ -138,7 +140,7 @@ func ListUsers(user *User) (users []User, err error) {
 
 func (user *User) Create() (err error) {
 
-	_, err = user.Db.Exec("select * from groups where id = $1", user.Group_id)
+	_, err = user.Db.Exec("select name from groups where id = $1", user.Group_id)
 	if err != nil {
 		err = errors.New("Group not found!")
 		return
