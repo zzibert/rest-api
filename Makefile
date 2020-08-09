@@ -13,5 +13,5 @@ down:
 	cd docker/ && docker-compose down
 
 test:
-	go test -v -cover
+	go test -check.vv
 

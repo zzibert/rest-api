@@ -4,13 +4,18 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	. "github.com/zzibert/rest-api/data"
 	. "gopkg.in/check.v1"
 )
 
-type GroupTestSuite struct{}
+type GroupTestSuite struct {
+	mux    *http.ServeMux
+	group  *TestGroup
+	writer *httptest.ResponseRecorder
+}
 
 func init() {
 	Suite(&GroupTestSuite{})
@@ -18,15 +23,28 @@ func init() {
 
 func Test(t *testing.T) { TestingT(t) }
 
-func (s *GroupTestSuite) TestHandleGet(c *C) {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/group/", handleGroupRequest(&TestGroup{}))
-	writer := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/group/1", nil)
-	mux.ServeHTTP(writer, request)
+func (s *GroupTestSuite) SetUpTest(c *C) {
+	s.group = &TestGroup{}
+	s.mux = http.NewServeMux()
+	s.mux.HandleFunc("/group/", handleGroupRequest(s.group))
+}
 
-	c.Check(writer.Code, Equals, 200)
+func (s *GroupTestSuite) TestHandleGet(c *C) {
+	request, _ := http.NewRequest("GET", "/group/1", nil)
+	s.mux.ServeHTTP(s.writer, request)
+
+	c.Check(s.writer.Code, Equals, 200)
 	var group Group
-	json.Unmarshal(writer.Body.Bytes(), &group)
+	json.Unmarshal(s.writer.Body.Bytes(), &group)
 	c.Check(group.Id, Equals, 1)
+}
+
+func (s *GroupTestSuite) TestHandlePut(c *C) {
+	json := strings.NewReader(`{"name":"updated group"}`)
+	request, _ := http.NewRequest("PUT", "/group/1", json)
+	s.mux.ServeHTTP(s.writer, request)
+
+	c.Check(s.writer.Code, Equals, 200)
+	c.Check(s.group.Id, Equals, 1)
+	c.Check(s.group.Name, Equals, "updated group")
 }
