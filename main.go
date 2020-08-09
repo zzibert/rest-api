@@ -3,18 +3,23 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"path"
 	"strconv"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	. "github.com/zzibert/rest-api/data"
 )
 
 func main() {
+	godotenv.Load(".env")
 
 	var err error
-	db, err := sql.Open("postgres", "user=zzibert dbname=postgres password=nekineki port=5432 sslmode=disable")
+	connectionString := fmt.Sprintf("user=%s dbname=%s password=%s port=%s sslmode=%s", os.Getenv("DB_USER"), os.Getenv("DB"), os.Getenv("PASSWORD"), os.Getenv("PORT"), os.Getenv("SSLMODE"))
+	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
 		panic(err)
 	}
