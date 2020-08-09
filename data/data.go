@@ -17,7 +17,7 @@ type GroupType interface {
 	Create() (err error)
 	Update() (err error)
 	Delete() (err error)
-	List() (groups []Group, err error)
+	List() (groups []GroupType, err error)
 }
 
 type UserType interface {
@@ -25,7 +25,7 @@ type UserType interface {
 	Create() (err error)
 	Update() (err error)
 	Delete() (err error)
-	List() (users []User, err error)
+	List() (users []UserType, err error)
 }
 
 type User struct {
