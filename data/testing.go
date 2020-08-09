@@ -27,7 +27,7 @@ func (user *TestUser) Delete() (err error) {
 	return
 }
 
-func (user *TestUser) List() (users []TestUser, err error) {
+func (user *TestUser) List() (users []UserType, err error) {
 	return
 }
 
@@ -56,6 +56,6 @@ func (group *TestGroup) Delete() (err error) {
 	return
 }
 
-func (group *TestGroup) List() (groups []TestGroup, err error) {
+func (group *TestGroup) List() (groups []GroupType, err error) {
 	return
 }
