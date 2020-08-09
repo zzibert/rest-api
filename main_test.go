@@ -7,22 +7,26 @@ import (
 	"testing"
 
 	. "github.com/zzibert/rest-api/data"
+	. "gopkg.in/check.v1"
 )
 
-func TestHandleGroupGet(t *testing.T) {
+type GroupTestSuite struct{}
+
+func init() {
+	Suite(&GroupTestSuite{})
+}
+
+func Test(t *testing.T) { TestingT(t) }
+
+func (s *GroupTestSuite) TestHandleGet(c *C) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/group/", handleGroupRequest(&TestGroup{}))
-
 	writer := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/group/1", nil)
+	request, _ := http.NewRequest("GET", "/post/1", nil)
 	mux.ServeHTTP(writer, request)
 
-	if writer.Code != 200 {
-		t.Errorf("Response code is %v", writer.Code)
-	}
+	c.Check(writer.Code, Equals, 200)
 	var group Group
 	json.Unmarshal(writer.Body.Bytes(), &group)
-	if group.Id != 1 {
-		t.Errorf("Cannot retrieve JSON group")
-	}
+	c.Check(group.Id, Equals, 1)
 }
