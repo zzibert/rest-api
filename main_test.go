@@ -22,7 +22,7 @@ func (s *GroupTestSuite) TestHandleGet(c *C) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/group/", handleGroupRequest(&TestGroup{}))
 	writer := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/post/1", nil)
+	request, _ := http.NewRequest("GET", "/group/1", nil)
 	mux.ServeHTTP(writer, request)
 
 	c.Check(writer.Code, Equals, 200)
