@@ -1,5 +1,5 @@
 build:
-	go build -o bin/server server.go
+	go build -o bin/main main.go
 
 run:
-	go run server.go
+	go run main.go
