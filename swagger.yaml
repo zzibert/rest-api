@@ -1,13 +1,40 @@
-basePath: /group/
+basePath: /
 consumes:
 - application/json
+definitions:
+  GroupType:
+    properties:
+      Create:
+        type: string
+      Delete:
+        type: string
+      Update:
+        type: string
+    type: object
+    x-go-package: _/Users/zanzibert/rest-api/data
 info:
   description: Documentation for API
   title: of API
   version: 1.0.0
-paths: {}
+paths:
+  /groups:
+    get:
+      description: Returns a list of groups
+      operationId: listGroups
+      responses:
+        "200":
+          $ref: '#/responses/groupsResponse'
+      tags:
+      - groups
 produces:
 - application/json
+responses:
+  groupsResponse:
+    description: A list of groups returns in response
+    schema:
+      items:
+        $ref: '#/definitions/GroupType'
+      type: array
 schemes:
 - http
 swagger: "2.0"

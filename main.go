@@ -3,7 +3,7 @@
 // Documentation for API
 //
 // Schemes: http
-// BasePath: /group/
+// BasePath: /
 // Version: 1.0.0
 //
 // Consumes:
@@ -37,9 +37,9 @@ func main() {
 	}
 
 	server := http.Server{
-		Addr: "127.0.0.1:8080",
+		Addr: "127.0.0.1:",
 	}
-	http.HandleFunc("/group/", HandleGroupRequest(&Group{Db: db}))
-	http.HandleFunc("/user/", HandleUserRequest(&User{Db: db}))
+	http.HandleFunc("/group", HandleGroupRequest(&Group{Db: db}))
+	http.HandleFunc("/user", HandleUserRequest(&User{Db: db}))
 	server.ListenAndServe()
 }

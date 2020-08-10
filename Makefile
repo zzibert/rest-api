@@ -19,5 +19,5 @@ test:
 	go test -check.vv
 
 swagger: check_install
-	GO111MODULE=off swagger generate spec -o ./swagger.yaml --scan-models
+	GO111MODULE=off swagger generate spec -o ./swagger.yaml --scan-models && swagger serve -F=swagger swagger.yaml
 

@@ -44,12 +44,21 @@ type Group struct {
 	Users []User `json:"users"`
 }
 
-// GROUP METHODS
+// A list of groups returns in response
+// swagger:response groupsResponse
+type groupsResponse struct {
+  // All groups in the system
+  // in: body
+	Body []GroupType
+}
 
-// swagger:route GET /groups/
+// swagger:route GET /groups groups listGroups
+// Returns a list of groups
+// responses:
+// 200: groupsResponse
 
 // ListGroups returns all existing groups
-func ListGroups(group *Group) (groups []Group, err error) {
+func (group *Group) ListGroups() (groups []Group, err error) {
 
 	rows, err := group.Db.Query("select id from groups")
 	if err != nil {
@@ -122,7 +131,7 @@ func (group *Group) Delete() (err error) {
 // USER METHODS
 
 // ListUsers returns all existing users
-func ListUsers(user *User) (users []User, err error) {
+func (user *User) ListUsers() (users []User, err error) {
 	rows, err := user.Db.Query("select id, name, password, email, group_id from users")
 	if err != nil {
 		return
