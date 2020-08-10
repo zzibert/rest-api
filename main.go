@@ -8,6 +8,7 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	. "github.com/zzibert/rest-api/api"
 	. "github.com/zzibert/rest-api/data"
 	_ "github.com/zzibert/rest-api/docs"
 )
