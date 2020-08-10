@@ -1,11 +1,4 @@
-basePath: /
-consumes:
-- application/json
-host: some-url.com
-info:
-  description: Documentation of our awesome API.
-  title: rest-api.
-  version: 1.0.0
+info: {}
 paths:
   /group/:
     post:
@@ -16,8 +9,4 @@ paths:
       summary: Creates a new group.
       tags:
       - group-tag
-produces:
-- application/json
-schemes:
-- http
 swagger: "2.0"

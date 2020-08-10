@@ -1,4 +1,17 @@
 // Package classification of API
+//
+// Documentation for API
+//
+// Schemes: http
+// BasePath: /group/
+// Version: 1.0.0
+//
+// Consumes:
+// - application/json
+//
+// Produces:
+// - application/json
+// swagger:meta
 
 package api
 
