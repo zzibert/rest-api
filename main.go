@@ -25,7 +25,7 @@ func main() {
 	server := http.Server{
 		Addr: "127.0.0.1:8080",
 	}
-	http.HandleFunc("/group/", handleGroupRequest(&Group{Db: db}))
-	http.HandleFunc("/user/", handleUserRequest(&User{Db: db}))
+	http.HandleFunc("/group/", HandleGroupRequest(&Group{Db: db}))
+	http.HandleFunc("/user/", HandleUserRequest(&User{Db: db}))
 	server.ListenAndServe()
 }

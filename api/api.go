@@ -11,7 +11,7 @@ import (
 
 // GROUP HANDLER FUNCTIONS
 
-func handleGroupRequest(g GroupType) http.HandlerFunc {
+func HandleGroupRequest(g GroupType) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
 		switch r.Method {
@@ -55,7 +55,7 @@ func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group GroupType)
 
 // USER HANDLER FUNCTIONS
 
-func handleUserRequest(u UserType) http.HandlerFunc {
+func HandleUserRequest(u UserType) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
 		switch r.Method {
