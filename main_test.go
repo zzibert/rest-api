@@ -27,6 +27,7 @@ func (s *GroupTestSuite) SetUpTest(c *C) {
 	s.group = &TestGroup{}
 	s.mux = http.NewServeMux()
 	s.mux.HandleFunc("/group/", handleGroupRequest(s.group))
+	s.writer = httptest.NewRecorder()
 }
 
 func (s *GroupTestSuite) TestHandleGet(c *C) {
