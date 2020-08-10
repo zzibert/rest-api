@@ -1,18 +1,3 @@
-// Package classification of API
-//
-// Documentation for API
-//
-// Schemes: http
-// BasePath: /group/
-// Version: 1.0.0
-//
-// Consumes:
-// - application/json
-//
-// Produces:
-// - application/json
-// swagger:meta
-
 package api
 
 import (
@@ -53,7 +38,7 @@ func HandleGroupRequest(g GroupType) http.HandlerFunc {
 
 func handleGetAllGroups(w http.ResponseWriter, r *http.Request, group GroupType) (err error) {
 
-	groups, err := group.List()
+	groups, err := group.ListGroups()
 	if err != nil {
 		return
 	}
@@ -97,7 +82,7 @@ func HandleUserRequest(u UserType) http.HandlerFunc {
 
 func handleGetAllUsers(w http.ResponseWriter, r *http.Request, user UserType) (err error) {
 
-	users, err := user.List()
+	users, err := user.ListUsers()
 	if err != nil {
 		return
 	}

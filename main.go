@@ -1,3 +1,17 @@
+// Package classification of API
+//
+// Documentation for API
+//
+// Schemes: http
+// BasePath: /group/
+// Version: 1.0.0
+//
+// Consumes:
+// - application/json
+//
+// Produces:
+// - application/json
+// swagger:meta
 package main
 
 import (
@@ -10,7 +24,6 @@ import (
 	_ "github.com/lib/pq"
 	. "github.com/zzibert/rest-api/api"
 	. "github.com/zzibert/rest-api/data"
-	_ "github.com/zzibert/rest-api/docs"
 )
 
 func main() {
