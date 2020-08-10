@@ -1,3 +1,5 @@
+// Package classification of API
+
 package api
 
 import (

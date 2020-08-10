@@ -15,3 +15,6 @@ down:
 test:
 	go test -check.vv
 
+swagger:
+	swagger serve -F=swagger swagger.yaml
+
