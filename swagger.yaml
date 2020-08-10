@@ -1,0 +1,23 @@
+basePath: /
+consumes:
+- application/json
+host: some-url.com
+info:
+  description: Documentation of our awesome API.
+  title: rest-api.
+  version: 1.0.0
+paths:
+  /group/:
+    post:
+      operationId: groupPost
+      responses:
+        "200":
+          $ref: '#/responses/handleGroupPost'
+      summary: Creates a new group.
+      tags:
+      - group-tag
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"
